@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.lyf.dao.MobileDao">
+	
+	<select id="queryAll" resultType="MyBook">
+		SELECT
+			id,
+			name,
+			book_url,
+			img_url,
+			last_page_name
+		FROM
+			user_book_list
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<update id="updatePageName" parameterType="java.util.Map">
+		UPDATE 
+			user_book_list
+		SET
+			last_page_name = #{value }
+		WHERE 
+			id = #{id }
+	</update>
+	
+	<insert id="addBook" parameterType="UserAndBook">
+		insert into user_book_list(
+			id,user_id,name,book_url,img_url
+		)values(
+			#{id},#{userId},#{name},#{bookUrl},#{imgUrl}
+		)
+	</insert>
+	
+</mapper>
