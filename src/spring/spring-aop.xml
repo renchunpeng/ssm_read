@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    						http://www.springframework.org/schema/aop 
+    						http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+    						
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    
+    <!-- 由于这个文件夹不在自动扫描的范围之内所以需要手动创建bean -->
+    <bean id="errAspect" class="com.soecode.system.aop.ErrAspect">
+    </bean>
+    
+    <!-- 也可以这样，添加一个扫描的地方 -->
+	<!-- <context:component-scan base-package="cn.com.reformer.aop"/>  --> 
+</beans>
