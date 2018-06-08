@@ -1,17 +1,12 @@
 package com.soecode.system.tag.opt;
 
-import java.io.IOException;
-import java.util.List;
+import com.soecode.lyf.entity.User;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import org.springframework.beans.factory.annotation.Configurable;
-
-import com.soecode.lyf.common.Constants;
-import com.soecode.lyf.entity.MyBook;
-import com.soecode.lyf.entity.User;
+import java.io.IOException;
 
 /**
  * 菜单操作权限标签：新增
@@ -35,9 +30,8 @@ public class ADD extends SimpleTagSupport {
         }
         
         String menuOptPower = "";
-        if (menuOptPower.indexOf("ADD") > -1 || "ALL".equals(menuOptPower)) {
+        if (menuOptPower.contains("ADD") || "ALL".equals(menuOptPower)) {
             getJspBody().invoke(null);
-            return;
         }
     }
 }
