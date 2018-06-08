@@ -42,7 +42,7 @@ public class LoginController {
 	private String doLogin(HttpServletRequest request, HttpServletResponse response, 
 			String name, String pwd, HttpSession session) {
 
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("name", name);
 		map.put("pwd", pwd);
 		User user = loginService.doLogin(map);
