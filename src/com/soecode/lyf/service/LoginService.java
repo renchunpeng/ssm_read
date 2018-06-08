@@ -11,7 +11,7 @@ public interface LoginService {
 
 	/**
 	 * 用户登录
-	 * 
+	 *
 	 * @return
 	 */
 	User doLogin(Map<String, String> map);
