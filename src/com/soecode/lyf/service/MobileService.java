@@ -32,4 +32,10 @@ public interface MobileService {
 	 * @param id
 	 */
 	void addBook(UserAndBook book);
+
+	/**
+	 * 保存书签
+	 * @param params
+	 */
+	int saveBookMark(Map params);
 }

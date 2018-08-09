@@ -48,7 +48,7 @@
 				<ul data-role="listview" data-inset="true">
 					<c:forEach items="${lists}" var="item"> 
 						<li>
-							<a url="<%=basePath %>mobile/test?url=${item.bookUrl}" >
+							<a url="<%=basePath %>mobile/test?url=${item.bookUrl}" bookMark="${item.bookMark}">
 								<img src="${item.imgUrl }">${item.name } 
  								<c:if test="${item.update }">
 								   <span id="updateText">更新</span>
@@ -65,8 +65,13 @@
 	<script>
 		$(function(){
 			$("div[data-role='content']").find("a").click(function(){
-				var pageUrl = $(this).attr("url");
-				window.location.href = pageUrl + "&isNewList=" + "true";
+				var bookMark = $(this).attr("bookMark");
+				if(bookMark){
+					window.location.href = "<%=basePath %>mobile/getContent?url=" + bookMark;
+				}else{
+					var pageUrl = $(this).attr("url");
+					window.location.href = pageUrl + "&isNewList=" + "true";
+				}
 			});
 		}) 
 	</script>	

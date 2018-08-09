@@ -24,7 +24,7 @@
 	</head>
 	<body>
 		<!--首页-->
-		<div data-role="page" id="page_detail" data-title="${title }"> 
+		<div data-role="page" id="page_detail" data-title="${title }">
 			<div data-role="content" id="content">
 				${content }
 			</div>
@@ -39,6 +39,9 @@
 							<a url="<%=basePath %>mobile/test" id="list">返回目录</a>
 						</li>
 						<li>
+							<a id="bookmark">加入书签</a>
+						</li>
+						<li>
 							<a url="${next }" id="next" data-icon="arrow-r">下一章</a>
 						</li>
 					</ul>
@@ -48,13 +51,13 @@
 	
 	<script>
 		$(function(){
-			$("a:not(#list)").click(function(){
+			$("a:not(#list,#bookmark)").click(function(){
 				var pageUrl = $(this).attr("url");
 				if(pageUrl.indexOf(".html") <= 0 ) {
 				    alert("已经没有了!");
 				    return;
 				}
-				
+
 				window.location.href = "<%=basePath%>mobile/getContent?url="+pageUrl;
 			});
 			
@@ -67,9 +70,26 @@
 				}else{
 					window.location.href = pageUrl + "?url=" + value;
 				}
-				
+			});
+
+			$("#bookmark").click(function(){
+				$.ajax({
+					url :"<%=basePath%>mobile/saveBookMark",
+					data :{"bookMark":"${thisUrl }"},
+					type : "post",
+					dataType:"json",
+					success: function (result) {
+						if (result.success) {
+							alert("书签保存成功！");
+						} else {
+							alert("书签保存失败！");
+						}
+					}
+				});
 			});
 		}) 
+
+
 	</script>
 	</body>
 </html>

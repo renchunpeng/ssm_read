@@ -50,4 +50,9 @@ public class MobileServiceImpl implements MobileService {
         }
         Common.getSession().setAttribute(Constants.BOOK_LIST, bookList);
     }
+
+    @Override
+    public int saveBookMark(Map params) {
+        return mobileDao.saveBookMark(params);
+    }
 }

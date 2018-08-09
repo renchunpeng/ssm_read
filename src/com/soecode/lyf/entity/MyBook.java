@@ -16,7 +16,16 @@ public class MyBook{
 	
 	private boolean update;//是否更新最新章节
 
-	
+	private String bookMark;//书签
+
+	public String getBookMark() {
+		return bookMark;
+	}
+
+	public void setBookMark(String bookMark) {
+		this.bookMark = bookMark;
+	}
+
 	public String getId() {
 		return id;
 	}

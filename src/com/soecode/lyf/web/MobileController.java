@@ -3,8 +3,10 @@ package com.soecode.lyf.web;
 import com.github.pagehelper.PageHelper;
 import com.soecode.lyf.common.Common;
 import com.soecode.lyf.common.Constants;
+import com.soecode.lyf.dto.Result;
 import com.soecode.lyf.entity.*;
 import com.soecode.lyf.service.MobileService;
+import org.apache.commons.collections.map.HashedMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -162,6 +164,7 @@ public class MobileController {
         model.addAttribute("title", pageName);
         model.addAttribute("pre", url.substring(0, 22) + chapters.get(0).attr("href"));
         model.addAttribute("next", url.substring(0, 22) + chapters.get(2).attr("href"));
+        model.addAttribute("thisUrl", url);
         return "/mobile/pageDetail";
     }
 
@@ -237,6 +240,34 @@ public class MobileController {
         userAndBook.setId(UUID.randomUUID().toString().replace("-", ""));
         mobileService.addBook(userAndBook);
 
+    }
+
+    /**
+     * 保存书签
+     * @param bookUrl
+     * @param session
+     */
+    @RequestMapping(value = "/saveBookMark")
+    @ResponseBody
+    public Result saveBookMark(String bookMark, HttpSession session){
+        try {
+            User loginUser = (User) session.getAttribute(Constants.SESSION_ID);
+            System.out.println(loginUser.getId());
+            System.out.println(bookMark);
+            Map<Object, Object> params = new HashedMap();
+            params.put("user_id",loginUser.getId());
+            params.put("book_mark",bookMark);
+            int end = bookMark.lastIndexOf("/");
+            params.put("book_url",bookMark.substring(0,end + 1));
+            int i = mobileService.saveBookMark(params);
+            if (i > 0 ){
+                return new Result(true,null);
+            }else {
+                return new Result(false,null);
+            }
+        }catch (Exception e){
+            return new Result(false,null);
+        }
     }
 
 }
