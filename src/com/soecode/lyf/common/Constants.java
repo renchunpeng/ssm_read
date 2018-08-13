@@ -17,4 +17,14 @@ public interface Constants {
      * 书架列表
      */
 	String BOOK_LIST = "bookList";
+
+	/**
+	 * 用户cookie的 name
+	 */
+	String COOKIE_NAME = "cookie_name";
+
+	/**
+	 * 用户cookie的 pwd
+	 */
+	String COOKIE_PWD = "cookie_pwd";
 }

@@ -47,14 +47,8 @@ public class MobileController {
 //		PageInfo page = new PageInfo(lists);
         model.addAttribute("lists", lists);
 
-        //将查询出的书籍列表存入session中，以供后面判断查询出来的书是否需要放入书架
-        String bookList = "";
-
         //获取最后更新时间和最新章节
         for (MyBook myBook : lists) {
-            //拼接书架url
-            bookList += myBook.getBookUrl() + "|";
-
             Document doc = null;
             try {
                 doc = Jsoup.connect(myBook.getBookUrl()).get();
@@ -81,8 +75,6 @@ public class MobileController {
                 e.printStackTrace();
             }
         }
-
-        session.setAttribute(Constants.BOOK_LIST, bookList);
 
         return "/mobile/bookList";
     }
