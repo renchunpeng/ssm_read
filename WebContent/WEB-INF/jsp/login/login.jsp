@@ -22,19 +22,17 @@
 				display: flex;
   				justify-content: center;
   				align-items: center;
+				background-image:url("<%=basePath %>images/login2.jpg");
+				background-repeat: no-repeat;
 			}
 		</style>
 	</head>
 	<body>
-	
 		<div data-role="page">
 			<div data-role="content">
-				<div id="divImg">
-					<img style="text-ali" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516878959632&di=9e25e868cb0a0b74c6454327418615d6&imgtype=0&src=http%3A%2F%2Fwww.pc6.com%2Fup%2F2013-7%2F20137259258.png" />
-				</div>
 				<form action="#" method="post">
 					<input type="text" name="zhanghao" id="zhanghao" placeholder="账号:" />
-					<input type="password" name="mima" id="mima" placeholder="密码:" />
+					<input type="number" name="mima" id="mima" placeholder="密码:" />
 					<a data-role="button" data-theme="b">登录</a>
 				</form>
 			</div>
@@ -55,13 +53,11 @@
  						pwd : pwd
  					},
  					success: function (data) {
- 						
  						if(data == "success"){
  							window.location.href = "<%=basePath %>mobile/bookList";
  						}else{
  							alert(data);
  						}
- 						
  					}
  				}; 
  				//这是用ajax的方式提交表单，不用刷新页面，而且这个插件提交表单可以
