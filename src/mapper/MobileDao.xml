@@ -37,5 +37,14 @@
 			user_id = #{user_id}
 			AND book_url = #{book_url}
 	</update>
+
+	<delete id="removeBookList" parameterType="java.util.Map">
+		DELETE
+		FROM
+			user_book_list
+		WHERE
+			user_id = #{user}
+			AND book_url = #{bookUrl}
+	</delete>
 	
 </mapper>

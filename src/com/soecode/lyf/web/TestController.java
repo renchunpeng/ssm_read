@@ -30,6 +30,16 @@ public class TestController {
 	@Autowired
 	private BookService bookService;
 
+	@RequestMapping(value = "/testpage", method = RequestMethod.GET)
+	private String testpage1(Model model) {
+		return "/test/testpage1";
+	}
+
+	@RequestMapping(value = "/testpage2", method = RequestMethod.GET)
+	private String testpage2(Model model) {
+		return "/test/testpage2";
+	}
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	private List<Book> list(Model model) {

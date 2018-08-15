@@ -36,4 +36,11 @@ public interface MobileDao {
 	 * @param params
 	 */
 	int saveBookMark(Map params);
+
+	/**
+	 * 移除书籍列表
+	 * @param params
+	 * @return
+	 */
+	int removeBookList(Map params);
 }

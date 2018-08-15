@@ -38,4 +38,10 @@ public interface MobileService {
 	 * @param params
 	 */
 	int saveBookMark(Map params);
+
+	/**
+	 * 移除书籍
+	 * @param params
+	 */
+	int removeBookList(Map params);
 }

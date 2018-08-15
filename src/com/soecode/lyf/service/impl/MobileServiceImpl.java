@@ -46,4 +46,12 @@ public class MobileServiceImpl implements MobileService {
     public int saveBookMark(Map params) {
         return mobileDao.saveBookMark(params);
     }
+
+    @Override
+    @Transactional
+    public int removeBookList(Map params) {
+        int x = mobileDao.removeBookList(params);
+        bookListUtils.setBookListToCookie();
+        return x;
+    }
 }

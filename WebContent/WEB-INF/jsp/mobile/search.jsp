@@ -1,32 +1,27 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>  
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
+<%@include file="/WEB-INF/jsp/common/head.jsp" %>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
-		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-		
+		<%@include file="/WEB-INF/jsp/common/jqueryMobile.jsp" %>
 		<script src="<%=basePath %>resources/scripts/jquery-form.js"></script>
 
+		<link rel="stylesheet" href="<%=basePath %>resources/css/commonCss.css" type="text/css">
+		<script src="<%=basePath %>resources/scripts/commonJs.js"></script>
 		<style>
 			.ban{
 				font-size:0.5em;
 			}
+
 		</style>
 	</head>
 	<body>
-	
+		<div id="mask" class="mask"></div>
 		<div data-role="page" id="home" data-title="小说搜索">
-			
+			<div data-role="header" data-position="fixed">
+				<h1>小说搜索</h1>
+				<a href="<%=basePath %>mobile/bookList" data-ajax="false" data-role="button" class="ui-btn-left" data-icon="back">返回</a>
+			</div>
 			<div data-role="content" >
 				<form action="">
 			    	<div data-role="fieldcontain">
@@ -47,6 +42,7 @@
 	<script>
  		$(function(){
  			$("#search").click(function(){
+				showMask();
  				var bookname = $("#bookname").val();
  				var url = '<%=basePath %>mobile/search';
  				var options = {
@@ -61,7 +57,7 @@
  						}else{
  							alert("没有查到相关书籍！");
  						}
- 						
+ 						hideMask();
  					}
  				}; 
  				//这是用ajax的方式提交表单，不用刷新页面，而且这个插件提交表单可以

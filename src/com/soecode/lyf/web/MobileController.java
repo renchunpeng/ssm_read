@@ -30,7 +30,7 @@ public class MobileController {
     private MobileService mobileService;
 
     /**
-     * 数据列表
+     * 用户书籍列表
      *
      * @param model
      * @return
@@ -236,7 +236,7 @@ public class MobileController {
 
     /**
      * 保存书签
-     * @param bookUrl
+     * @param bookMark
      * @param session
      */
     @RequestMapping(value = "/saveBookMark")
@@ -262,4 +262,27 @@ public class MobileController {
         }
     }
 
+    /**
+     * 从书籍列表移除书籍
+     * @param bookUrl
+     * @return
+     */
+    @RequestMapping(value = "/removeBookList")
+    @ResponseBody
+    public Result removeBookList(String bookUrl, HttpSession session){
+        try {
+            User loginUser = (User) session.getAttribute(Constants.SESSION_ID);
+            Map map = new HashMap();
+            map.put("bookUrl",bookUrl);
+            map.put("user",loginUser.getId());
+            int i = mobileService.removeBookList(map);
+            if (i > 0 ){
+                return new Result(true,null);
+            }else {
+                return new Result(false,null);
+            }
+        }catch (Exception e){
+            return new Result(false,null);
+        }
+    }
 }

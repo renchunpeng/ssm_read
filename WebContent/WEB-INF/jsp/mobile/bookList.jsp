@@ -1,10 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/common/head.jsp" %>
-
 <!DOCTYPE HTML>
 <html>
 <head>
     <%@include file="/WEB-INF/jsp/common/jqueryMobile.jsp" %>
+
+    <link rel="stylesheet" href="<%=basePath %>resources/css/commonCss.css" type="text/css">
+    <script src="<%=basePath %>resources/scripts/commonJs.js"></script>
     <style>
         span{
             font-size:10px;
@@ -21,6 +23,7 @@
 <body>
 
 <div data-role="page" id="home" data-title="追书神器" >
+    <div id="mask" class="mask"></div>
     <div data-role="header" data-position="fixed" >
         <div data-role="navbar" >
             <ul>
@@ -46,6 +49,27 @@
             </c:forEach>
         </ul>
     </div>
+
+    <a href="#myPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all" style="display: none">显示弹窗</a>
+
+    <div data-role="popup" id="myPopup" class="ui-content">
+        <div data-role="header">
+            <h1>信息确认</h1>
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <h3>确定将本书从书籍列表中移除吗?</h3>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <button onclick="removeBook()" class="ui-btn ui-icon-check ui-btn-icon-left">确定</button>
+                </div>
+
+                <div class="ui-block-b">
+                    <button onclick="closeDialog()" class="ui-btn ui-icon-refresh ui-btn-icon-right">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -59,7 +83,34 @@
                 window.location.href = pageUrl + "&isNewList=" + "true";
             }
         });
+
+        /*长按删除书籍*/
+        $("li a").on("taphold",function(){
+            removeBookUrl = $(this).attr("url");
+            $("#myPopup").popup("open");
+        });
     })
+
+    function removeBook() {
+        closeDialog();
+        showMask();
+        var x = removeBookUrl.indexOf("?");
+        var bookUrl = removeBookUrl.substring(x+5,removeBookUrl.length)
+        $.ajax({
+            url:"<%=basePath %>mobile/removeBookList",
+            data:{
+                bookUrl:bookUrl
+            },
+            success:function(result){
+                alert("已成功从书籍列表移除！");
+                location.reload(true);
+            }
+        });
+    }
+
+    function closeDialog() {
+        $("#myPopup").popup("close");
+    }
 </script>
 </body>
 </html>
