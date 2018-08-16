@@ -93,9 +93,6 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                 }else if(cook.getName().equalsIgnoreCase(Constants.COOKIE_PWD)){ //获取密码键
                     pwdValue = cook.getValue().toString();
                     System.out.println("pwd:"+pwdValue);    //获取值
-                }else if(cook.getName().equalsIgnoreCase(Constants.BOOK_LIST)){ //获取书籍列表
-                    bookListValue = cook.getValue().toString();
-                    System.out.println("bookList:"+pwdValue);    //获取值
                 }
             }
 
@@ -110,11 +107,10 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
             if (null != user) {
                 request.getSession().setAttribute(Constants.SESSION_ID,user);
-                request.getSession().setAttribute(Constants.BOOK_LIST,bookListValue);
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
 
         return null;

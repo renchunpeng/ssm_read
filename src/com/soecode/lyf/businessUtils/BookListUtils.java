@@ -21,7 +21,7 @@ public class BookListUtils {
     private MobileService mobileService;
 
     /**
-     * 将用户书籍列表放入cookie
+     * 将用户书籍列表放入cookie(已经废弃，没地方用了)
      */
     public void setBookListToCookie(){
         User user = (User) Common.getSession().getAttribute(Constants.SESSION_ID);
@@ -39,5 +39,32 @@ public class BookListUtils {
         cookieBookList.setMaxAge(30*24*60*60);   //存活期为一个月 30*24*60*60
         cookieBookList.setPath("/");
         response.addCookie(cookieBookList);
+    }
+
+    /**
+     * 获取当前用户书籍列表
+     * @return
+     */
+    public List<MyBook> getBookList(){
+        User user = (User) Common.getSession().getAttribute(Constants.SESSION_ID);
+        List<MyBook> lists = mobileService.getList(user.getId());
+
+        return  lists;
+    }
+
+    /**
+     * 获取书籍列表url拼接字符串
+     * @return
+     */
+    public String getBookListToString(){
+        User user = (User) Common.getSession().getAttribute(Constants.SESSION_ID);
+        List<MyBook> lists = mobileService.getList(user.getId());
+        String bookList = "";
+        for (MyBook myBook : lists) {
+            //拼接书架url
+            bookList += myBook.getBookUrl() + "|";
+        }
+
+        return  bookList;
     }
 }

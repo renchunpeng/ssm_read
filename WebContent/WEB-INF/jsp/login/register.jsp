@@ -17,12 +17,13 @@
 </head>
 <body>
 <div data-role="page">
+    <div id="mask" class="mask"></div>
     <div data-role="header">
         <a href="<%=basePath %>login/goLogin" data-ajax="false" data-role="button">返回登录</a>
         <h1>用户注册</h1>
     </div>
     <div data-role="content">
-        <form id="form1" action="<%=basePath%>login/register" method="post" data-ajax="true">
+        <form id="form1">
             <label for="userNumber">账号：</label>
             <input type="text" name="name" id="userNumber" placeholder="请输入账号"/>
             <label for="userPw">密码：</label>
@@ -54,9 +55,24 @@
             $("#info").html("请输入姓名!");
             return false;
         }
-        else {
-            document.getElementById("form1").submit();
-        }
+        showMask();
+        $.ajax({
+            url:"<%=basePath%>login/register",
+            type:"POST",
+            data:{
+                name:userNumber,
+                password:userPw,
+                realname:userName
+            },
+            success:function(result){
+                alert(result);
+                hideMask();
+                if(result.success){
+                    alert("用户注册成功！");
+                    window.location.href = "<%=basePath%>login/goLogin";
+                }
+            }
+        });
     }
 </script>
 </html>

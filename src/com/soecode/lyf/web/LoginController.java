@@ -1,7 +1,9 @@
 package com.soecode.lyf.web;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.soecode.lyf.businessUtils.BookListUtils;
 import com.soecode.lyf.common.Constants;
+import com.soecode.lyf.dto.Result;
 import com.soecode.lyf.entity.User;
 import com.soecode.lyf.service.LoginService;
 import com.soecode.lyf.service.MobileService;
@@ -36,8 +38,12 @@ public class LoginController {
 	@RequestMapping(value = "/goLogin", method = RequestMethod.GET)
 	private String goLogin() {
 		logger.info("进入登录接口！");
-		
 		return "/login/login";
+	}
+
+	@RequestMapping(value = "/goRegister", method = RequestMethod.GET)
+	private String goRegister() {
+		return "/login/register";
 	}
 	
 	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
@@ -60,7 +66,6 @@ public class LoginController {
 		
 		//填充cookie
         setCookie(request,response,name,pwd);
-		bookListUtils.setBookListToCookie();
         
 		return "success";
 	}
@@ -84,5 +89,24 @@ public class LoginController {
 		userPwd.setPath("/");
 		response.addCookie(userPwd);
     }
+
+	/**
+	 * 用户注册
+	 * @param user
+	 */
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@ResponseBody
+	public Result register(User user) {
+		try {
+			int i = loginService.register(user);
+			if (i > 0 ){
+				return new Result(true,null);
+			}else {
+				return new Result(false,null);
+			}
+		}catch (Exception e){
+			return new Result(false,null);
+		}
+	}
 
 }

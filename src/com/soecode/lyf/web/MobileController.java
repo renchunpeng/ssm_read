@@ -1,6 +1,7 @@
 package com.soecode.lyf.web;
 
 import com.github.pagehelper.PageHelper;
+import com.soecode.lyf.businessUtils.BookListUtils;
 import com.soecode.lyf.common.Common;
 import com.soecode.lyf.common.Constants;
 import com.soecode.lyf.dto.Result;
@@ -28,6 +29,9 @@ import java.util.*;
 public class MobileController {
     @Autowired
     private MobileService mobileService;
+
+    @Autowired
+    private BookListUtils bookListUtils;
 
     /**
      * 用户书籍列表
@@ -71,7 +75,6 @@ public class MobileController {
                 }
 
             } catch (IOException e) {
-                // TODO 自动生成的 catch 块
                 e.printStackTrace();
             }
         }
@@ -88,12 +91,11 @@ public class MobileController {
      */
     @RequestMapping(value = "/test")
     public String test(Model model, String url, String isNewList) {
-        List<Page> lists = new ArrayList<Page>();
+        List<Page> lists = new ArrayList<>();
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
 
@@ -117,6 +119,13 @@ public class MobileController {
             page.setUrl(pageUrl);
             page.setTitle(pageTitle);
             lists.add(page);
+        }
+        //判断是否需要显示添加到书架按钮
+        String bookList = bookListUtils.getBookListToString();
+        if (bookList.contains(url)){
+            model.addAttribute("display", false);
+        }else {
+            model.addAttribute("display", true);
         }
 
         model.addAttribute("lists", lists);
@@ -142,7 +151,6 @@ public class MobileController {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
         Elements links = doc.select("#content");//文章主体
@@ -179,7 +187,6 @@ public class MobileController {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
         Elements links = doc.select(".bookbox");//查询到的书籍

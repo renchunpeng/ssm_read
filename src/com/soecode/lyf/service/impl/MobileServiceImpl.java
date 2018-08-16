@@ -1,7 +1,10 @@
 package com.soecode.lyf.service.impl;
 
 import com.soecode.lyf.businessUtils.BookListUtils;
+import com.soecode.lyf.businessUtils.BookUtils;
+import com.soecode.lyf.dao.BookDao;
 import com.soecode.lyf.dao.MobileDao;
+import com.soecode.lyf.entity.Book;
 import com.soecode.lyf.entity.MyBook;
 import com.soecode.lyf.entity.UserAndBook;
 import com.soecode.lyf.service.MobileService;
@@ -23,7 +26,10 @@ public class MobileServiceImpl implements MobileService {
     private MobileDao mobileDao;
 
     @Autowired
-    private BookListUtils bookListUtils;
+    private BookDao bookDao;
+
+    @Autowired
+    private BookUtils bookUtils;
 
     @Override
     public List<MyBook> getList(String userId) {
@@ -39,7 +45,16 @@ public class MobileServiceImpl implements MobileService {
     @Transactional
     public void addBook(UserAndBook book) {
         mobileDao.addBook(book);
-        bookListUtils.setBookListToCookie();
+        //判断该书籍在book中是否存在不存在就存入
+        String books = bookUtils.getBookListToString();
+        if (!books.contains(book.getBookUrl())) {
+            Book item = new Book();
+            item.setName(book.getName());
+            item.setBookUrl(book.getBookUrl());
+            item.setBookImg(book.getImgUrl());
+            bookDao.saveBook(item);
+        }
+
     }
 
     @Override
@@ -51,7 +66,6 @@ public class MobileServiceImpl implements MobileService {
     @Transactional
     public int removeBookList(Map params) {
         int x = mobileDao.removeBookList(params);
-        bookListUtils.setBookListToCookie();
         return x;
     }
 }

@@ -33,14 +33,22 @@
 				<form action="#" method="post">
 					<input type="text" name="zhanghao" id="zhanghao" placeholder="账号:" />
 					<input type="number" name="mima" id="mima" placeholder="密码:" />
-					<a data-role="button" data-theme="b">登录</a>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<a data-role="button" data-theme="b" id="login">登录</a>
+						</div>
+
+						<div class="ui-block-b">
+							<a data-role="button" data-theme="b" href="<%=basePath %>login/goRegister" data-ajax="false">注册</a>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
 		
 	<script>
  		$(function(){
-  			$("a").click(function(){
+  			$("#login").click(function(){
  				var name = $("#zhanghao").val();
  				var pwd = $("#mima").val();
  				
