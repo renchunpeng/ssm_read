@@ -15,4 +15,11 @@ public interface LoginService {
 	 * @return
 	 */
 	User doLogin(Map<String, String> map);
+
+	/**
+	 * 用户注册
+	 *
+	 * @return
+	 */
+	int register(User user);
 }

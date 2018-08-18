@@ -40,8 +40,10 @@
 			</div>
 			
 			<div data-role="content" >
-				<button onclick="addBook()" id="addBook" >添加到书架</button>
-			
+				<c:if test="${display}">
+					<button onclick="addBook()" id="addBook" >添加到书架</button>
+				</c:if>
+
 				<ul data-role="listview" data-inset="true" >
 					<c:forEach items="${lists}" var="item"> 
 						<li><a url="${item.url}"><c:out value="${item.title}"></c:out></a></li>
@@ -62,11 +64,11 @@
 				
 			});
 			
-			//判断加入书架的按钮是否需要显示
+/*			//判断加入书架的按钮是否需要显示
 			var bookList = "${sessionScope.bookList}";
 			if(bookList.indexOf("${bookUrl}") > -1){
 				$("#addBook").parent().hide();  
-			}
+			}*/
 			
 		}) 
 		

@@ -6,11 +6,7 @@
 	
 	<select id="queryAll" resultType="MyBook">
 		SELECT
-			id,
-			name,
-			book_url,
-			img_url,
-			last_page_name
+			*
 		FROM
 			user_book_list
 		WHERE
@@ -33,5 +29,22 @@
 			#{id},#{userId},#{name},#{bookUrl},#{imgUrl}
 		)
 	</insert>
+
+	<update id="saveBookMark" parameterType="java.util.Map">
+		UPDATE user_book_list
+		SET book_mark =  #{book_mark}
+		WHERE
+			user_id = #{user_id}
+			AND book_url = #{book_url}
+	</update>
+
+	<delete id="removeBookList" parameterType="java.util.Map">
+		DELETE
+		FROM
+			user_book_list
+		WHERE
+			user_id = #{user}
+			AND book_url = #{bookUrl}
+	</delete>
 	
 </mapper>

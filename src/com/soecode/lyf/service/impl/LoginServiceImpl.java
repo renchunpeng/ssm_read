@@ -21,7 +21,11 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public User doLogin(Map<String, String> map) {
-		// TODO 自动生成的方法存根
 		return loginDao.doLogin(map);
+	}
+
+	@Override
+	public int register(User user) {
+		return loginDao.register(user);
 	}
 }

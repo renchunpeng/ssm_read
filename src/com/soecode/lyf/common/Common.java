@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,6 +15,11 @@ import org.springframework.web.util.WebUtils;
 import com.soecode.lyf.entity.User;
 
 public class Common {
+	/**
+	 * 获取最新更新时间
+	 * @param str
+	 * @return
+	 */
 	public static String getLastDate(String str) {
 		String result = "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -47,9 +53,14 @@ public class Common {
 		User loginUser = (User) WebUtils.getSessionAttribute(request,Constants.SESSION_ID);
 		return loginUser;
 	}
-	
+
 	public static HttpSession getSession(){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		return request.getSession();
+	}
+
+	public static HttpServletResponse getResponse(){
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+		return response;
 	}
 }

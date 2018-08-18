@@ -1,8 +1,10 @@
 package com.soecode.lyf.service.impl;
 
-import com.soecode.lyf.common.Common;
-import com.soecode.lyf.common.Constants;
+import com.soecode.lyf.businessUtils.BookListUtils;
+import com.soecode.lyf.businessUtils.BookUtils;
+import com.soecode.lyf.dao.BookDao;
 import com.soecode.lyf.dao.MobileDao;
+import com.soecode.lyf.entity.Book;
 import com.soecode.lyf.entity.MyBook;
 import com.soecode.lyf.entity.UserAndBook;
 import com.soecode.lyf.service.MobileService;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,12 @@ public class MobileServiceImpl implements MobileService {
 
     @Autowired
     private MobileDao mobileDao;
+
+    @Autowired
+    private BookDao bookDao;
+
+    @Autowired
+    private BookUtils bookUtils;
 
     @Override
     public List<MyBook> getList(String userId) {
@@ -38,16 +45,27 @@ public class MobileServiceImpl implements MobileService {
     @Transactional
     public void addBook(UserAndBook book) {
         mobileDao.addBook(book);
-
-        List<MyBook> lists = new ArrayList<MyBook>();
-        lists = mobileDao.queryAll(Common.getUser().getId());
-        String bookList = "";
-
-        //获取最后更新时间和最新章节
-        for (MyBook myBook : lists) {
-            //拼接书架url
-            bookList += myBook.getBookUrl() + "|";
+        //判断该书籍在book中是否存在不存在就存入
+        String books = bookUtils.getBookListToString();
+        if (!books.contains(book.getBookUrl())) {
+            Book item = new Book();
+            item.setName(book.getName());
+            item.setBookUrl(book.getBookUrl());
+            item.setBookImg(book.getImgUrl());
+            bookDao.saveBook(item);
         }
-        Common.getSession().setAttribute(Constants.BOOK_LIST, bookList);
+
+    }
+
+    @Override
+    public int saveBookMark(Map params) {
+        return mobileDao.saveBookMark(params);
+    }
+
+    @Override
+    @Transactional
+    public int removeBookList(Map params) {
+        int x = mobileDao.removeBookList(params);
+        return x;
     }
 }

@@ -1,10 +1,13 @@
 package com.soecode.lyf.web;
 
 import com.github.pagehelper.PageHelper;
+import com.soecode.lyf.businessUtils.BookListUtils;
 import com.soecode.lyf.common.Common;
 import com.soecode.lyf.common.Constants;
+import com.soecode.lyf.dto.Result;
 import com.soecode.lyf.entity.*;
 import com.soecode.lyf.service.MobileService;
+import org.apache.commons.collections.map.HashedMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,8 +30,11 @@ public class MobileController {
     @Autowired
     private MobileService mobileService;
 
+    @Autowired
+    private BookListUtils bookListUtils;
+
     /**
-     * 数据列表
+     * 用户书籍列表
      *
      * @param model
      * @return
@@ -45,14 +51,8 @@ public class MobileController {
 //		PageInfo page = new PageInfo(lists);
         model.addAttribute("lists", lists);
 
-        //将查询出的书籍列表存入session中，以供后面判断查询出来的书是否需要放入书架
-        String bookList = "";
-
         //获取最后更新时间和最新章节
         for (MyBook myBook : lists) {
-            //拼接书架url
-            bookList += myBook.getBookUrl() + "|";
-
             Document doc = null;
             try {
                 doc = Jsoup.connect(myBook.getBookUrl()).get();
@@ -75,12 +75,9 @@ public class MobileController {
                 }
 
             } catch (IOException e) {
-                // TODO 自动生成的 catch 块
                 e.printStackTrace();
             }
         }
-
-        session.setAttribute(Constants.BOOK_LIST, bookList);
 
         return "/mobile/bookList";
     }
@@ -94,12 +91,11 @@ public class MobileController {
      */
     @RequestMapping(value = "/test")
     public String test(Model model, String url, String isNewList) {
-        List<Page> lists = new ArrayList<Page>();
+        List<Page> lists = new ArrayList<>();
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
 
@@ -123,6 +119,13 @@ public class MobileController {
             page.setUrl(pageUrl);
             page.setTitle(pageTitle);
             lists.add(page);
+        }
+        //判断是否需要显示添加到书架按钮
+        String bookList = bookListUtils.getBookListToString();
+        if (bookList.contains(url)){
+            model.addAttribute("display", false);
+        }else {
+            model.addAttribute("display", true);
         }
 
         model.addAttribute("lists", lists);
@@ -148,7 +151,6 @@ public class MobileController {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
         Elements links = doc.select("#content");//文章主体
@@ -162,6 +164,7 @@ public class MobileController {
         model.addAttribute("title", pageName);
         model.addAttribute("pre", url.substring(0, 22) + chapters.get(0).attr("href"));
         model.addAttribute("next", url.substring(0, 22) + chapters.get(2).attr("href"));
+        model.addAttribute("thisUrl", url);
         return "/mobile/pageDetail";
     }
 
@@ -184,7 +187,6 @@ public class MobileController {
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO 自动生成的 catch 块
             e.printStackTrace();
         }
         Elements links = doc.select(".bookbox");//查询到的书籍
@@ -239,4 +241,55 @@ public class MobileController {
 
     }
 
+    /**
+     * 保存书签
+     * @param bookMark
+     * @param session
+     */
+    @RequestMapping(value = "/saveBookMark")
+    @ResponseBody
+    public Result saveBookMark(String bookMark, HttpSession session){
+        try {
+            User loginUser = (User) session.getAttribute(Constants.SESSION_ID);
+            System.out.println(loginUser.getId());
+            System.out.println(bookMark);
+            Map<Object, Object> params = new HashedMap();
+            params.put("user_id",loginUser.getId());
+            params.put("book_mark",bookMark);
+            int end = bookMark.lastIndexOf("/");
+            params.put("book_url",bookMark.substring(0,end + 1));
+            int i = mobileService.saveBookMark(params);
+            if (i > 0 ){
+                return new Result(true,null);
+            }else {
+                return new Result(false,null);
+            }
+        }catch (Exception e){
+            return new Result(false,null);
+        }
+    }
+
+    /**
+     * 从书籍列表移除书籍
+     * @param bookUrl
+     * @return
+     */
+    @RequestMapping(value = "/removeBookList")
+    @ResponseBody
+    public Result removeBookList(String bookUrl, HttpSession session){
+        try {
+            User loginUser = (User) session.getAttribute(Constants.SESSION_ID);
+            Map map = new HashMap();
+            map.put("bookUrl",bookUrl);
+            map.put("user",loginUser.getId());
+            int i = mobileService.removeBookList(map);
+            if (i > 0 ){
+                return new Result(true,null);
+            }else {
+                return new Result(false,null);
+            }
+        }catch (Exception e){
+            return new Result(false,null);
+        }
+    }
 }

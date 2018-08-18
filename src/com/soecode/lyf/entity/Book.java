@@ -5,26 +5,19 @@ package com.soecode.lyf.entity;
  */
 public class Book {
 
-	private long bookId;// 图书ID
+	private String bookId;// 图书ID
 
 	private String name;// 图书名称
 
-	private int number;// 馆藏数量
+	private String bookUrl;// 书籍地址
 
-	public Book() {
-	}
+	private String bookImg;// 书籍图片地址
 
-	public Book(long bookId, String name, int number) {
-		this.bookId = bookId;
-		this.name = name;
-		this.number = number;
-	}
-
-	public long getBookId() {
+	public String getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(long bookId) {
+	public void setBookId(String bookId) {
 		this.bookId = bookId;
 	}
 
@@ -36,18 +29,19 @@ public class Book {
 		this.name = name;
 	}
 
-	public int getNumber() {
-		return number;
+	public String getBookUrl() {
+		return bookUrl;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setBookUrl(String bookUrl) {
+		this.bookUrl = bookUrl;
 	}
 
-	@Override
-	public String toString() {
-		return "Book [bookId=" + bookId + ", name=" + name + ", number=" + number + "]";
+	public String getBookImg() {
+		return bookImg;
 	}
 
-
+	public void setBookImg(String bookImg) {
+		this.bookImg = bookImg;
+	}
 }

@@ -3,42 +3,23 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soecode.lyf.dao.BookDao">
-	<!-- 目的：为dao接口方法提供sql语句配置 -->
-	<select id="queryById" resultType="Book" parameterType="long">
-		<!-- 具体的sql -->
+	
+	<select id="getBookList" resultType="Book">
 		SELECT
-			book_id,
-			name,
-			number
+			*
 		FROM
-			book
-		WHERE
-			book_id = #{bookId}
+			book;
 	</select>
-	
-	<select id="queryAll" resultType="Book">
-		SELECT
-			book_id,
-			name,
-			number
-		FROM
-			book
-		ORDER BY
-			book_id
-		LIMIT #{offset}, #{limit}
-	</select>
-	
-	<update id="reduceNumber">
-		UPDATE book
-		SET number = number - 1
-		WHERE
-			book_id = #{bookId}
-		AND number > 0
-	</update>
-	
-	<insert id="insertBook" parameterType="Book">
-		INSERT INTO book (NAME, number)
-			VALUES
-			(#{name}, #{number})
+
+	<insert id="saveBook" parameterType="Book">
+		INSERT INTO book
+		VALUES
+			(
+				UUID(),
+				#{name},
+				#{bookUrl},
+				#{bookImg}
+			)
 	</insert>
+	
 </mapper>

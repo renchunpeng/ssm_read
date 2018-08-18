@@ -10,8 +10,8 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
     <!-- 由于这个文件夹不在自动扫描的范围之内所以需要手动创建bean -->
-    <bean id="errAspect" class="com.soecode.system.aop.ErrAspect">
-    </bean>
+<!--    <bean id="errAspect" class="com.soecode.system.aop.ErrAspect">
+    </bean>-->
     
     <!-- 也可以这样，添加一个扫描的地方 -->
 	<!-- <context:component-scan base-package="cn.com.reformer.aop"/>  --> 

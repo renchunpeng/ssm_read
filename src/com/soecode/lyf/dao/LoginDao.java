@@ -12,4 +12,6 @@ public interface LoginDao {
 	 * @return
 	 */
 	User doLogin(Map<String, String> map);
+
+	int register(User user);
 }

@@ -12,5 +12,11 @@
 		WHERE
 			name = #{name} and password = #{pwd }
 	</select>
+
+	<insert id="register" parameterType="User">
+		INSERT INTO user (id,name, password)
+		VALUES
+		(uuid(),#{name}, #{password})
+	</insert>
 	
 </mapper>
