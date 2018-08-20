@@ -82,6 +82,9 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     public User autoLogin(HttpServletRequest request,HttpServletResponse response)  {
         try {
             Cookie[] cookie = request.getCookies();
+            if(null == cookie){
+                return null;
+            }
             String nameValue = null;
             String pwdValue = null;
             String bookListValue = null;
